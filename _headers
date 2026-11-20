@@ -1,0 +1,17 @@
+# Netlify: intestazioni HTTP del sito
+
+/*
+  # Anteprima per il cliente: i motori di ricerca non la indicizzano.
+  # Togliere la riga X-Robots-Tag quando la pagina va online davvero.
+  X-Robots-Tag: noindex, nofollow
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+
+# I font non cambiano mai: cache lunga
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Immagini: cache di una settimana
+/assets/img/*
+  Cache-Control: public, max-age=604800

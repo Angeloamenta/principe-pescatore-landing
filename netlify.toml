@@ -1,0 +1,9 @@
+# Netlify pubblica solo la pagina: index.html, assets/ e _headers.
+# I bundle JS in assets/js/ sono già compilati e versionati (npm run build in locale),
+# quindi qui basta copiare i file: BRIEF, tools e sorgenti restano fuori dal sito.
+[build]
+  command = "rm -rf dist && mkdir dist && cp -R index.html assets _headers dist/"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"

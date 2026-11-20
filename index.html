@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Principe Pescatore · Il pesce surgelato di tutti i giorni</title>
+  <meta name="description" content="Principe Pescatore è il pesce surgelato in busta di Comavicla: sei referenze già pulite e porzionate, dal salmone Keta alle cozze cilene. Ecco come cucinarle e come trovarle nel banco surgelati.">
+  <meta name="theme-color" content="#0D2C52">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230D2C52'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%23E26033' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="preload" href="assets/fonts/lilita-one-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/figtree-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/img/logo-principe-700.webp" as="image">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<a class="skip-link" href="#contenuto">Vai al contenuto</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" data-header>
+  <div class="wrap header-inner">
+    <a class="brand" href="#top" aria-label="Il Principe Pescatore, torna su">
+      <img src="assets/img/logo-principe-700.webp" alt="Il Principe Pescatore" width="700" height="265">
+    </a>
+    <nav class="main-nav" aria-label="Navigazione principale">
+      <ul>
+        <li><a href="#viaggio">Il viaggio</a></li>
+        <li><a href="#gamma">Gamma</a></li>
+        <li><a href="#cucina">In cucina</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn--primary btn--sm" href="#dove">Dove trovarlo</a>
+  </div>
+</header>
+
+<main id="contenuto">
+
+  <!-- ============ HERO: mare in WebGL ============ -->
+  <section class="hero" id="top" data-hero aria-labelledby="hero-title">
+    <!-- cielo + mare statico in CSS; il canvas three.js si aggiunge qui sopra -->
+    <div class="hero-stage" data-ocean>
+      <!-- il planisfero del pack: deriva lenta, parallasse allo scroll, lente che segue il mouse -->
+      <div class="hero-map" data-hero-map aria-hidden="true">
+        <div class="hero-map-drift">
+          <div class="hero-map-layer"></div>
+          <div class="hero-map-layer hero-map-ink" data-hero-map-ink></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-dive" data-hero-dive aria-hidden="true"></div>
+
+    <div class="wrap hero-content">
+      <img class="hero-logo" data-hero-fade src="assets/img/logo-principe-1400.webp" alt="Il Principe Pescatore" width="1400" height="531">
+      <h1 class="hero-title" id="hero-title">
+        <span class="line"><span>Porta il mare</span></span>
+        <span class="line"><span>sulla tavola!</span></span>
+      </h1>
+      <p class="lead" data-hero-fade>Pesce surgelato in busta, già pulito e porzionato, per la spesa di tutti i giorni. Sei referenze per il banco surgelati, dal salmone Keta alle cozze cilene.</p>
+      <div class="actions" data-hero-fade>
+        <a class="btn btn--primary" href="#dove">Dove trovarlo</a>
+        <a class="btn btn--ghost" href="#gamma">Guarda la gamma</a>
+      </div>
+    </div>
+
+    <a class="scroll-cue" href="#viaggio" data-hero-fade>
+      <span>Scorri</span>
+      <svg viewBox="0 0 16 24" width="14" height="22" aria-hidden="true"><path d="M8 2v18M2 14l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </section>
+
+  <!-- ============ IL VIAGGIO DEL PRINCIPE: carta nautica ============ -->
+  <section class="section--nastro viaggio" id="viaggio" aria-labelledby="viaggio-title">
+    <div class="rotta" data-rotta>
+      <div class="wrap section-head section-head--split">
+        <h2 class="h2" id="viaggio-title">Il viaggio del Principe</h2>
+        <p>Il Principe parte dall'Italia e fa il giro del mondo: in ogni mare prende un pesce della gamma. Scorri e seguilo lungo la rotta.</p>
+      </div>
+
+      <div class="wrap rotta-layout">
+        <div class="rotta-chart">
+          <!-- il planisfero della hero; la rotta si traccia con lo scroll e il Principe la percorre.
+               Il Pacifico si attraversa uscendo dal bordo sinistro e rientrando da destra (due tratti). -->
+          <svg class="carta" viewBox="0 0 1800 929" role="img" aria-labelledby="carta-title">
+            <title id="carta-title">Planisfero con la rotta del Principe: Atlantico del Sud, Cile, Pacifico del Nord, Oceano Indiano e ritorno in Italia</title>
+            <defs>
+              <mask id="rotta-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1800" height="929">
+                <!-- un tratto per maschera: il tratteggio di rivelazione ripartirebbe a ogni sottotratto e i due si disegnerebbero insieme -->
+                <path class="rotta-mask" data-rotta-mask d="M895,232 C891,234 882,243 872,246 C862,249 849,250 838,252 C827,254 817,255 806,258 C795,261 784,263 774,270 C764,277 757,282 746,302 C735,322 710,354 708,390 C706,426 738,478 735,520 C732,562 714,608 690,640 C666,672 614,687 592,712 C570,737 570,774 555,790 C540,806 518,811 500,808 C482,805 462,790 448,770 C434,750 436,710 415,690 C394,670 361,664 320,650 C279,636 217,622 170,605 C123,588 58,558 36,548" pathLength="1" />
+                <path class="rotta-mask" data-rotta-mask d="M1782,520 C1780,497 1778,423 1768,380 C1758,337 1742,293 1725,262 C1708,231 1688,196 1668,196 C1648,196 1627,237 1606,262 C1585,287 1561,317 1540,345 C1519,373 1503,411 1478,432 C1453,453 1426,462 1388,470 C1350,478 1290,487 1252,480 C1214,473 1183,442 1160,428 C1137,414 1128,410 1112,395 C1096,380 1075,356 1062,338 C1049,320 1044,297 1032,284 C1020,271 1005,268 990,262 C975,256 955,252 940,248 C925,244 908,238 902,236" pathLength="1" />
+              </mask>
+              <clipPath id="principe-clip"><circle cx="0" cy="-48" r="34" /></clipPath>
+            </defs>
+
+            <image class="carta-mappa" href="assets/img/mappa.webp" width="1800" height="929" />
+
+            <path class="rotta-guida" d="M895,232 C891,234 882,243 872,246 C862,249 849,250 838,252 C827,254 817,255 806,258 C795,261 784,263 774,270 C764,277 757,282 746,302 C735,322 710,354 708,390 C706,426 738,478 735,520 C732,562 714,608 690,640 C666,672 614,687 592,712 C570,737 570,774 555,790 C540,806 518,811 500,808 C482,805 462,790 448,770 C434,750 436,710 415,690 C394,670 361,664 320,650 C279,636 217,622 170,605 C123,588 58,558 36,548 M1782,520 C1780,497 1778,423 1768,380 C1758,337 1742,293 1725,262 C1708,231 1688,196 1668,196 C1648,196 1627,237 1606,262 C1585,287 1561,317 1540,345 C1519,373 1503,411 1478,432 C1453,453 1426,462 1388,470 C1350,478 1290,487 1252,480 C1214,473 1183,442 1160,428 C1137,414 1128,410 1112,395 C1096,380 1075,356 1062,338 C1049,320 1044,297 1032,284 C1020,271 1005,268 990,262 C975,256 955,252 940,248 C925,244 908,238 902,236" />
+            <path class="rotta-linea" data-rotta-path mask="url(#rotta-reveal)" d="M895,232 C891,234 882,243 872,246 C862,249 849,250 838,252 C827,254 817,255 806,258 C795,261 784,263 774,270 C764,277 757,282 746,302 C735,322 710,354 708,390 C706,426 738,478 735,520 C732,562 714,608 690,640 C666,672 614,687 592,712 C570,737 570,774 555,790 C540,806 518,811 500,808 C482,805 462,790 448,770 C434,750 436,710 415,690 C394,670 361,664 320,650 C279,636 217,622 170,605 C123,588 58,558 36,548 M1782,520 C1780,497 1778,423 1768,380 C1758,337 1742,293 1725,262 C1708,231 1688,196 1668,196 C1648,196 1627,237 1606,262 C1585,287 1561,317 1540,345 C1519,373 1503,411 1478,432 C1453,453 1426,462 1388,470 C1350,478 1290,487 1252,480 C1214,473 1183,442 1160,428 C1137,414 1128,410 1112,395 C1096,380 1075,356 1062,338 C1049,320 1044,297 1032,284 C1020,271 1005,268 990,262 C975,256 955,252 940,248 C925,244 908,238 902,236" />
+
+            <!-- il Pacifico continua dall'altra parte della carta: frecce sui due bordi -->
+            <g class="carta-bordo-rotta">
+              <path d="M58,520 l-26,24 l34,10" />
+              <path d="M1768,548 l14,-28 l18,26" />
+            </g>
+
+            <!-- partenza e arrivo in Italia (ancora) e tappe numerate nell'ordine del viaggio -->
+          <g class="carta-tappa" data-tappa-pin="0" transform="translate(592 712)"><circle r="30" /><text dy="12">1</text></g>
+          <g class="carta-tappa" data-tappa-pin="1" transform="translate(415 690)"><circle r="30" /><text dy="12">2</text></g>
+          <g class="carta-tappa" data-tappa-pin="2" transform="translate(1668 196)"><circle r="30" /><text dy="12">3</text></g>
+          <g class="carta-tappa" data-tappa-pin="3" transform="translate(1252 480)"><circle r="30" /><text dy="12">4</text></g>
+          <g class="carta-tappa carta-casa" data-tappa-pin="4" transform="translate(902 236)" aria-label="Partenza e arrivo: Italia"><circle r="30" /><path class="carta-ancora" d="M0,-17 a5,5 0 1,1 0.01,0 M0,-12 V15 M-9,-5 H9 M-15,5 C-14,13 -7,17 0,17 C7,17 14,13 15,5" /></g>
+
+            <!-- il Principe (dal pack) viaggia sulla rotta -->
+            <g class="barca" data-barca transform="translate(895 232)">
+              <g class="barca-scala">
+                <path class="principe-puntale" d="M-9,-18 L0,0 L9,-18 Z" />
+                <circle class="principe-anello" cx="0" cy="-48" r="38" />
+                <circle class="principe-fondo" cx="0" cy="-48" r="34" />
+                <image href="assets/img/principe.webp" x="-36" y="-88" width="72" height="83" clip-path="url(#principe-clip)" preserveAspectRatio="xMidYMin slice" />
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <ol class="tappe" data-tappe>
+          <li class="tappa" data-tappa>
+            <p class="tappa-n">Tappa 1 di 5 · Atlantico del Sud</p>
+            <div class="tappa-pack">
+              <div class="pack" role="img" aria-label="Pack provvisorio Filetti di nasello: la foto del prodotto va nel cerchio">
+                <img src="assets/img/pack-fronte-600.webp" alt="" width="600" height="600" decoding="async">
+                <span class="pack-foto"><span class="pack-foto-label">foto prodotto</span><span class="pack-foto-nome">Filetti di nasello</span></span>
+              </div>
+            </div>
+            <div class="tappa-testo">
+              <h3 class="h3">Filetti di nasello</h3>
+              <p>Filetti dal gusto delicato, da fare al forno con un filo d'olio oppure impanati.</p>
+            <p class="tappa-zona">Zona di pesca da confermare</p>
+            </div>
+          </li>
+          <li class="tappa" data-tappa>
+            <p class="tappa-n">Tappa 2 di 5 · Cile</p>
+            <div class="tappa-pack">
+              <div class="pack" role="img" aria-label="Pack provvisorio Cozze cilene sgusciate e a mezzo guscio: la foto del prodotto va nel cerchio">
+                <img src="assets/img/pack-fronte-600.webp" alt="" width="600" height="600" decoding="async">
+                <span class="pack-foto"><span class="pack-foto-label">foto prodotto</span><span class="pack-foto-nome">Cozze cilene</span></span>
+              </div>
+            </div>
+            <div class="tappa-testo">
+              <h3 class="h3">Cozze cilene <span class="tappa-sub">sgusciate e a mezzo guscio</span></h3>
+              <p>Già pulite: sgusciate per sughi, risotti e zuppe di mare, a mezzo guscio da gratinare al forno.</p>
+            <p class="tappa-zona">Referenze da confermare</p>
+            </div>
+          </li>
+          <li class="tappa" data-tappa>
+            <p class="tappa-n">Tappa 3 di 5 · Pacifico del Nord</p>
+            <div class="tappa-pack">
+              <div class="pack" role="img" aria-label="Pack provvisorio Fette di salmone Keta: la foto del prodotto va nel cerchio">
+                <img src="assets/img/pack-fronte-600.webp" alt="" width="600" height="600" decoding="async">
+                <span class="pack-foto"><span class="pack-foto-label">foto prodotto</span><span class="pack-foto-nome">Fette di salmone Keta</span></span>
+              </div>
+            </div>
+            <div class="tappa-testo">
+              <h3 class="h3">Fette di salmone Keta</h3>
+              <p>Salmone del Pacifico in fette, da cuocere in padella in pochi minuti o da aggiungere alla pasta.</p>
+            </div>
+          </li>
+          <li class="tappa" data-tappa>
+            <p class="tappa-n">Tappa 4 di 5 · Oceano Indiano</p>
+            <div class="tappa-pack">
+              <div class="pack" role="img" aria-label="Pack provvisorio Tranci di pesce spada: la foto del prodotto va nel cerchio">
+                <img src="assets/img/pack-fronte-600.webp" alt="" width="600" height="600" decoding="async">
+                <span class="pack-foto"><span class="pack-foto-label">foto prodotto</span><span class="pack-foto-nome">Tranci di pesce spada</span></span>
+              </div>
+            </div>
+            <div class="tappa-testo">
+              <h3 class="h3">Tranci di pesce spada</h3>
+              <p>Tranci già puliti, senza pelle da togliere. Vanno bene sulla griglia, in padella o al forno.</p>
+            <p class="tappa-zona">Zona di pesca da confermare</p>
+            </div>
+          </li>
+          <li class="tappa" data-tappa>
+            <p class="tappa-n">Tappa 5 di 5 · Ritorno a casa</p>
+            <div class="tappa-pack">
+              <div class="pack" role="img" aria-label="Pack provvisorio Filetti di trota iridea: la foto del prodotto va nel cerchio">
+                <img src="assets/img/pack-fronte-600.webp" alt="" width="600" height="600" decoding="async">
+                <span class="pack-foto"><span class="pack-foto-label">foto prodotto</span><span class="pack-foto-nome">Filetti di trota iridea</span></span>
+              </div>
+            </div>
+            <div class="tappa-testo">
+              <h3 class="h3">Filetti di trota iridea</h3>
+              <p>Filetti di trota d'allevamento, buoni al cartoccio o in padella con burro e salvia.</p>
+            <p class="tappa-zona">Zona di allevamento da confermare</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <p class="wrap rotta-nota">La zona di pesca o il paese di allevamento sono scritti su ogni busta.</p>
+    </div>
+
+    <div class="video-stage" data-video-stage>
+      <figure class="video-frame" data-video-frame>
+        <!-- SOSTITUIRE con <video controls playsinline muted poster="..."> versione 16:9 videowall, 45s -->
+        <div class="video-poster" role="img" aria-label="Placeholder del video Il viaggio del Principe">
+          <span class="video-poster-title">Il viaggio del Principe</span>
+          <span class="video-poster-note">Video 45", 16:9, comprensibile senza audio</span>
+        </div>
+        <button class="play" type="button" aria-label="Riproduci il video">
+          <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+        </button>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ LA GAMMA (rail orizzontale su desktop) ============ -->
+  <section class="gamma" id="gamma" data-gamma aria-labelledby="gamma-title">
+    <div class="gamma-inner">
+      <div class="wrap section-head section-head--split gamma-head">
+        <!-- il messaggio della linea, sul nastro blu del logo: è la promessa che vale per tutta la gamma -->
+        <p class="claim-tempo">
+          <span class="claim-tempo-orologio" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><circle cx="24" cy="26" r="16" /><path d="M24 17v9l6 4M20 6h8M24 6v4M38 12l3-3" /></svg>
+          </span>
+          <span class="claim-tempo-nastro">Pronti in <strong>5</strong> minuti</span>
+        </p>
+        <h2 class="h2" id="gamma-title">La gamma in busta</h2>
+        <p>Sei referenze nello stesso formato in busta. A scaffale si riconoscono dal nastro blu e dal cerchio corallo con la foto del prodotto.</p>
+        <div class="gamma-progress" aria-hidden="true"><span data-gamma-progress></span></div>
+      </div>
+
+      <ul class="gamma-track" data-gamma-track>
+        <li class="prodotto">
+          <div class="pack" role="img" aria-label="Pack provvisorio Fette di salmone Keta: la foto del prodotto va nel cerchio">
+            <img src="assets/img/pack-fronte-600.webp" alt="" width="600" height="600" loading="lazy" decoding="async">
+            <span class="pack-foto"><span class="pack-foto-label">foto prodotto</span><span class="pack-foto-nome">Fette di salmone Keta</span></span>
+          </div>
+          <h3 class="h3">Fette di salmone Keta</h3>
+          <dl class="specs">
+            <div><dt>Formato</dt><dd>Busta 000 g</dd></div>
+            <div><dt>Pronto in</dt><dd>00 min</dd></div>
+          </dl>
+          <p>Salmone del Pacifico in fette, da cuocere in padella in pochi minuti o da aggiungere alla pasta.</p>
+        </li>
+        <li class="prodotto">
+          <div class="pack" role="img" aria-label="Pack provvisorio Tranci di pesce spada: la foto del prodotto va nel cerchio">
+            <img src="assets/img/pack-fronte-600.webp" alt="" width="600" height="600" loading="lazy" decoding="async">
+            <span class="pack-foto"><span class="pack-foto-label">foto prodotto</span><span class="pack-foto-nome">Tranci di pesce spada</span></span>
+          </div>
+          <h3 class="h3">Tranci di pesce spada</h3>
+          <dl class="specs">
+            <div><dt>Formato</dt><dd>Busta 000 g</dd></div>
+            <div><dt>Pronto in</dt><dd>00 min</dd></div>
+          </dl>
+          <p>Tranci già puliti, senza pelle da togliere. Vanno bene sulla griglia, in padella o al forno.</p>
+        </li>
+        <li class="prodotto">
+          <div class="pack" role="img" aria-label="Pack provvisorio Filetti di nasello: la foto del prodotto va nel cerchio">
+            <img src="assets/img/pack-fronte-600.webp" alt="" width="600" height="600" loading="lazy" decoding="async">
+            <span class="pack-foto"><span class="pack-foto-label">foto prodotto</span><span class="pack-foto-nome">Filetti di nasello</span></span>
+          </div>
+          <h3 class="h3">Filetti di nasello</h3>
+          <dl class="specs">
+            <div><dt>Formato</dt><dd>Busta 000 g</dd></div>
+            <div><dt>Pronto in</dt><dd>00 min</dd></div>
+          </dl>
+          <p>Filetti dal gusto delicato, da fare al forno con un filo d'olio oppure impanati.</p>
+        </li>
+        <li class="prodotto">
+          <div class="pack" role="img" aria-label="Pack provvisorio Filetti di trota iridea: la foto del prodotto va nel cerchio">
+            <img src="assets/img/pack-fronte-600.webp" alt="" width="600" height="600" loading="lazy" decoding="async">
+            <span class="pack-foto"><span class="pack-foto-label">foto prodotto</span><span class="pack-foto-nome">Filetti di trota iridea</span></span>
+          </div>
+          <h3 class="h3">Filetti di trota iridea</h3>
+          <dl class="specs">
+            <div><dt>Formato</dt><dd>Busta 000 g</dd></div>
+            <div><dt>Pronto in</dt><dd>00 min</dd></div>
+          </dl>
+          <p>Filetti di trota d'allevamento, buoni al cartoccio o in padella con burro e salvia.</p>
+        </li>
+        <li class="prodotto prodotto--tbc">
+          <div class="pack" role="img" aria-label="Pack provvisorio Cozze cilene sgusciate: la foto del prodotto va nel cerchio">
+            <img src="assets/img/pack-fronte-600.webp" alt="" width="600" height="600" loading="lazy" decoding="async">
+            <span class="pack-foto"><span class="pack-foto-label">foto prodotto</span><span class="pack-foto-nome">Cozze cilene sgusciate</span></span>
+          </div>
+          <span class="badge">Da confermare</span>
+          <h3 class="h3">Cozze cilene sgusciate</h3>
+          <dl class="specs">
+            <div><dt>Formato</dt><dd>Busta 000 g</dd></div>
+            <div><dt>Pronto in</dt><dd>00 min</dd></div>
+          </dl>
+          <p>Cozze già pulite e sgusciate, pronte per sughi, risotti e zuppe di mare.</p>
+        </li>
+        <li class="prodotto prodotto--tbc">
+          <div class="pack" role="img" aria-label="Pack provvisorio Cozze cilene a mezzo guscio: la foto del prodotto va nel cerchio">
+            <img src="assets/img/pack-fronte-600.webp" alt="" width="600" height="600" loading="lazy" decoding="async">
+            <span class="pack-foto"><span class="pack-foto-label">foto prodotto</span><span class="pack-foto-nome">Cozze cilene a mezzo guscio</span></span>
+          </div>
+          <span class="badge">Da confermare</span>
+          <h3 class="h3">Cozze cilene a mezzo guscio</h3>
+          <dl class="specs">
+            <div><dt>Formato</dt><dd>Busta 000 g</dd></div>
+            <div><dt>Pronto in</dt><dd>00 min</dd></div>
+          </dl>
+          <p>Cozze a mezzo guscio da gratinare al forno o da aggiungere agli spaghetti.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ DAL FREEZER ALLA TAVOLA ============ -->
+  <section class="section section--pergamena" id="cucina" aria-labelledby="passi-title">
+    <div class="wrap">
+      <div class="section-head section-head--split">
+        <h2 class="h2" id="passi-title">Dal freezer alla tavola</h2>
+        <p>Il pesce esce dalla busta già pulito e porzionato. Nessun passaggio complicato.</p>
+      </div>
+      <ol class="passi" data-passi>
+        <li class="passo">
+          <span class="passo-n" aria-hidden="true">1</span>
+          <h3 class="h3">Apri la busta</h3>
+          <p>Prendi le porzioni che ti servono e rimetti il resto in freezer.</p>
+          <span class="passo-tempo">0 min</span>
+        </li>
+        <li class="passo">
+          <span class="passo-n" aria-hidden="true">2</span>
+          <h3 class="h3">In padella o al forno</h3>
+          <p>Ogni referenza ha i suoi tempi di cottura, scritti sul retro della busta.</p>
+          <span class="passo-tempo">00 min</span>
+        </li>
+        <li class="passo">
+          <span class="passo-n" aria-hidden="true">3</span>
+          <h3 class="h3">In tavola</h3>
+          <p>Un filo d'olio, una fetta di limone e il contorno che c'è in casa.</p>
+          <span class="passo-tempo">Pronto</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ DOVE TROVARLO: riconoscere la busta nel banco ============ -->
+  <section class="section section--carta dove" id="dove" aria-labelledby="dove-title">
+    <div class="wrap dove-grid">
+      <div class="dove-pack" data-dove-pack>
+        <div class="pack" role="img" aria-label="Il fronte della busta Principe Pescatore, con i tre punti per riconoscerla segnati da 1 a 3">
+          <img src="assets/img/pack-fronte-600.webp" alt="" width="600" height="600" loading="lazy" decoding="async">
+          <span class="pack-foto"><span class="pack-foto-label">foto prodotto</span><span class="pack-foto-nome">Filetti di nasello</span></span>
+          <span class="segno" style="--x: 36%; --y: 25%" aria-hidden="true">1</span>
+          <span class="segno" style="--x: 61%; --y: 37%" aria-hidden="true">2</span>
+          <span class="segno" style="--x: 55%; --y: 55%" aria-hidden="true">3</span>
+        </div>
+      </div>
+
+      <div class="dove-copy">
+        <h2 class="h2" id="dove-title">Dove trovarlo</h2>
+        <p class="dove-lead">Nel reparto surgelati del supermercato, insieme al pesce. Le buste sono color pergamena e si riconoscono da lontano.</p>
+        <ol class="segni">
+          <li>
+            <span class="segni-n" aria-hidden="true">1</span>
+            <div><h3 class="h4">Il Principe sul nastro blu</h3><p>In alto a sinistra, con il nome scritto in oro.</p></div>
+          </li>
+          <li>
+            <span class="segni-n" aria-hidden="true">2</span>
+            <div><h3 class="h4">«Porta il mare sulla tavola!»</h3><p>Il claim in grande, sopra la mappa.</p></div>
+          </li>
+          <li>
+            <span class="segni-n" aria-hidden="true">3</span>
+            <div><h3 class="h4">Il cerchio corallo</h3><p>Dentro c'è la foto del pesce che stai comprando.</p></div>
+          </li>
+        </ol>
+        <!-- SOSTITUIRE con la foto vera del banco surgelati (da Comavicla) -->
+        <figure class="banco" role="img" aria-label="Spazio per la foto del banco surgelati con le buste Principe Pescatore">
+          <span class="banco-titolo">Foto del banco surgelati</span>
+          <span class="banco-nota">Le buste Principe Pescatore a scaffale, nel reparto pesce</span>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PER LA DISTRIBUZIONE (compatta) ============ -->
+  <section class="section section--nastro distribuzione" id="distribuzione" aria-labelledby="distribuzione-title">
+    <div class="wrap distribuzione-grid">
+      <div class="distribuzione-copy">
+        <h2 class="h2" id="distribuzione-title">Per la distribuzione</h2>
+        <p>Principe Pescatore è la linea di Comavicla per la spesa di tutti i giorni. Se lavori per un'insegna e vuoi portarla nel tuo banco surgelati, scarica il brand profile o scrivi al referente commerciale.</p>
+        <p class="distribuzione-fiera">Ci trovi a Marca Bologna 2027, padiglione 00, stand 00.</p>
+      </div>
+      <div class="distribuzione-azioni">
+        <div class="doc-preview" role="img" aria-label="Anteprima provvisoria del brand profile A4">
+          <span class="doc-band">Il Principe Pescatore</span>
+          <span class="doc-title">Brand profile</span>
+          <span class="doc-lines"></span>
+          <span class="doc-waterline"></span>
+          <span class="doc-lines doc-lines--short"></span>
+        </div>
+        <div class="referente">
+          <p class="referente-label">Referente commerciale</p>
+          <p class="referente-nome">Nome Cognome</p>
+          <p><a href="mailto:commerciale@example.com">commerciale@example.com</a></p>
+          <p><a href="tel:+390000000000">+39 000 000 0000</a></p>
+          <!-- SOSTITUIRE href con il PDF definitivo -->
+          <a class="btn btn--oro" href="#" download>Scarica il brand profile (PDF)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <img class="footer-logo" src="assets/img/logo-principe-700.webp" alt="Il Principe Pescatore" width="700" height="265" loading="lazy">
+      <p class="small">Ragione sociale S.r.l., Via Indirizzo 00, 00000 Città (XX), P. IVA 00000000000</p>
+      <ul class="footer-links">
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#distribuzione">Per la distribuzione</a></li>
+        <li><a href="#">Privacy</a></li>
+      </ul>
+    </div>
+    <p class="footer-wordmark" aria-hidden="true">Porta il mare sulla tavola</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.bundle.js" defer></script>
+</body>
+</html>

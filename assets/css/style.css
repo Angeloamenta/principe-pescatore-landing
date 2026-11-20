@@ -1,0 +1,809 @@
+/* ==========================================================================
+   Il Principe Pescatore · Landing
+   Direzione (dal pack): carta dell'esploratore. Pergamena, planisfero seppia,
+   nastro blu notte con lettere oro, anello corallo, titoli serif condensati.
+   ========================================================================== */
+
+/* ---------- Font self-hosted (OFL) ----------
+   Titoli: Lilita One, un solo peso, tondo e grasso come il lettering di un'etichetta.
+   Testi: Figtree variabile (300–900) con il suo corsivo; i pesi 500/600/700 escono dallo stesso file. */
+@font-face { font-family: "Lilita One"; font-weight: 400; font-style: normal; font-display: swap; src: url("../fonts/lilita-one-latin-400.woff2") format("woff2"); }
+@font-face { font-family: "Figtree"; font-weight: 300 900; font-style: normal; font-display: swap; src: url("../fonts/figtree-latin-wght-normal.woff2") format("woff2"); }
+@font-face { font-family: "Figtree"; font-weight: 300 900; font-style: italic; font-display: swap; src: url("../fonts/figtree-latin-wght-italic.woff2") format("woff2"); }
+
+:root {
+  /* Colori campionati dal pack */
+  --pergamena: #E4C37B;
+  --pergamena-scura: #CC8435;
+  --pergamena-chiara: #F3E3BD;
+  --carta: #FBF3DF;             /* fogli e form: la pergamena "pulita" */
+  --seppia: #3C2415;            /* titolo "Porta il mare sulla tavola!" */
+  --seppia-2: #5E3F25;          /* testo secondario: 5,6:1 sulla pergamena */
+  --nastro: #0D2C52;            /* il nastro del logo */
+  --nastro-scuro: #081E3A;
+  --nastro-chiaro: #1A406F;
+  --oro: #C2923F;
+  --oro-chiaro: #E2B85F;
+  --corallo: #E26033;           /* anello della finestra foto: solo decorazione */
+  --corallo-scuro: #B3401C;     /* corallo leggibile come testo su carta */
+  --corda: #B88643;
+  --crema: #F3E3BD;
+  --crema-2: #D9C9A4;           /* testo secondario su blu */
+  --linea: rgba(60, 36, 21, 0.2);
+  --orizzonte: #E8CC8E;         /* = HORIZON nello shader: devono restare uguali */
+
+  /* Texture */
+  --tex-pergamena: url("../img/pergamena.jpg");
+  --tex-mappa: url("../img/mappa.webp");
+
+  /* Tipografia */
+  --font-display: "Lilita One", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --font-titolo: var(--font-display);
+  --font-text: "Figtree", system-ui, sans-serif;
+  --font-cond: var(--font-text);   /* etichette, bottoni, dati: Figtree più pesante, non c'è più un condensato */
+  --fs-small: 0.875rem;
+  --fs-body: 1.0625rem;
+  --fs-lead: 1.25rem;
+  --fs-h4: 1.25rem;
+  --fs-h3: 1.625rem;
+  --fs-h2: clamp(2.5rem, 5.4vw, 4.25rem);
+  --fs-h1: clamp(3rem, 7.4vw, 6rem);
+
+  /* Spazi (scala 4px) */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --section-y: clamp(4.5rem, 10vw, 8rem);
+
+  /* Forme */
+  --r-ui: 4px;
+  --r-media: 10px;
+  --wrap: 75rem;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --header-h: 4.5rem;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --focus: var(--nastro);
+}
+
+/* ---------- Reset essenziale ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--header-h) + 1rem); }
+html:not(.js) { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--pergamena-chiara);
+  color: var(--seppia);
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  caret-color: var(--corallo-scuro);
+}
+img, svg, video, canvas { display: block; max-width: 100%; }
+h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+strong { font-weight: 600; }
+
+::selection { background: var(--nastro); color: var(--crema); }
+
+a {
+  color: var(--nastro);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color 150ms ease;
+}
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 2px; }
+
+.skip-link {
+  position: absolute; left: var(--s-4); top: -100px; z-index: 100;
+  padding: var(--s-2) var(--s-4);
+  background: var(--nastro); color: var(--crema);
+  font-weight: 600;
+}
+.skip-link:focus { top: var(--s-4); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: clip; }
+
+/* ---------- Layout ---------- */
+.wrap {
+  width: 100%;
+  max-width: calc(var(--wrap) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.section { padding-block: var(--section-y); }
+
+/* superfici: pergamena (texture del pack), carta chiara, blu del nastro */
+.section--pergamena { background: var(--pergamena) var(--tex-pergamena) center / cover; }
+.section--carta {
+  background:
+    linear-gradient(rgba(246, 233, 200, 0.72), rgba(246, 233, 200, 0.72)),
+    var(--tex-pergamena) center / cover;
+}
+.section--nastro {
+  --focus: var(--oro-chiaro);
+  background: var(--nastro);
+  color: var(--crema);
+}
+.section--nastro ::selection { background: var(--oro-chiaro); color: var(--nastro); }
+.section--nastro a { color: var(--crema); }
+
+/* ---------- Tipografia ---------- */
+.hero-title, .h2, .footer-wordmark, .video-poster-title, .banco-titolo {
+  font-family: var(--font-display);
+  font-weight: 400;              /* Lilita ha un solo peso: niente grassetto finto */
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+}
+.hero-title { font-size: var(--fs-h1); color: var(--seppia); }
+.h2 { font-size: var(--fs-h2); text-wrap: balance; }
+.section--nastro .h2 { color: var(--oro-chiaro); }
+.h3 { font-family: var(--font-titolo); font-weight: 400; font-size: var(--fs-h3); line-height: 1.1; }
+.h4 { font-family: var(--font-titolo); font-weight: 400; font-size: var(--fs-h4); line-height: 1.25; }
+.lead { font-size: var(--fs-lead); line-height: 1.5; color: var(--seppia-2); max-width: 30rem; }
+.small { font-size: var(--fs-small); }
+.opt { font-weight: 400; color: var(--seppia-2); }
+
+.section-head--split {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: var(--s-4) var(--s-8);
+  align-items: end;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+.section-head--split > p { font-size: var(--fs-lead); line-height: 1.5; color: var(--seppia-2); max-width: 30rem; }
+.section--nastro .section-head--split > p { color: var(--crema-2); }
+
+/* ---------- Bottoni ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 3rem;
+  padding: 0 var(--s-5);
+  border: 2px solid transparent;
+  border-radius: var(--r-ui);
+  font-family: var(--font-cond);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out), background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+.btn--sm { min-height: 2.5rem; padding: 0 var(--s-4); font-size: 0.9375rem; }
+.btn--block { width: 100%; }
+/* il bottone principale è il nastro del logo: blu con lettere chiare */
+.btn--primary { background: var(--nastro); color: var(--crema); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.25); }
+.btn--ghost { border-color: var(--seppia); color: var(--seppia); background: rgba(251, 243, 223, 0.35); }
+.btn--outline { border-color: var(--seppia); color: var(--seppia); background: transparent; }
+
+@media (hover: hover) and (pointer: fine) {
+  .btn--primary:hover { background: var(--nastro-chiaro); }
+  .btn--ghost:hover, .btn--outline:hover { background: var(--seppia); color: var(--crema); }
+  a:not(.btn):hover { text-decoration-thickness: 2px; }
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  position: fixed; inset: 0 0 auto; z-index: 50;
+  transition: background-color 250ms ease, box-shadow 250ms ease;
+}
+.site-header.is-scrolled {
+  background: rgba(246, 233, 200, 0.95);
+  -webkit-backdrop-filter: saturate(1.2) blur(10px);
+  backdrop-filter: saturate(1.2) blur(10px);
+  box-shadow: 0 1px 0 var(--linea), 0 8px 20px -14px rgba(60, 36, 21, 0.45);
+}
+.header-inner { display: flex; align-items: center; gap: var(--s-6); min-height: var(--header-h); }
+.brand { display: block; flex: 0 0 auto; transition: opacity 250ms ease, transform 300ms var(--ease-out); }
+.brand img { height: 3.1rem; width: auto; }
+/* in cima alla pagina il logo grande è nella hero: quello piccolo entra quando si scorre */
+html.js .site-header:not(.is-scrolled) .brand { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+.main-nav { margin-left: auto; }
+.main-nav ul { display: flex; gap: var(--s-5); }
+.main-nav a { color: var(--seppia); text-decoration: none; font-family: var(--font-cond); font-weight: 700; font-size: 1.0625rem; padding-block: var(--s-2); }
+.main-nav a:hover { color: var(--nastro); }
+
+/* ==========================================================================
+   HERO — cielo di pergamena con il planisfero, mare in WebGL
+   ========================================================================== */
+.hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  min-height: 42rem;
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero-stage {
+  position: absolute; inset: 0; z-index: -2;
+  background:
+    /* mare statico di riserva (senza WebGL): sparisce quando il canvas è pronto */
+    linear-gradient(to bottom, transparent 56%, #2C5A7E 56%, var(--nastro-scuro) 100%),
+    /* verso l'orizzonte la carta sfuma in un tono unico, uguale alla foschia dello shader */
+    linear-gradient(to bottom, rgba(232, 204, 142, 0) 18%, var(--orizzonte) 50%),
+    var(--tex-pergamena) center / cover,
+    var(--pergamena);
+}
+.hero-stage.is-live {
+  background:
+    linear-gradient(to bottom, rgba(232, 204, 142, 0) 18%, var(--orizzonte) 50%),
+    var(--tex-pergamena) center / cover,
+    var(--pergamena);
+}
+/* il planisfero: verso l'orizzonte sfuma nel tono della foschia dello shader */
+.hero-map {
+  position: absolute; inset: 0;
+  mix-blend-mode: multiply;
+  -webkit-mask-image: linear-gradient(to bottom, #000 18%, transparent 50%);
+          mask-image: linear-gradient(to bottom, #000 18%, transparent 50%);
+  pointer-events: none;
+}
+.hero-map-drift { position: absolute; inset: 0; transform-origin: 62% 20%; }
+.hero-map-layer {
+  position: absolute; inset: 0;
+  background: var(--tex-mappa) 62% 6% / min(1500px, 115%) auto no-repeat;
+}
+/* la lente: lo stesso planisfero con l'inchiostro più carico, visibile solo attorno al puntatore */
+.hero-map-ink {
+  --mx: 60%; --my: 25%;
+  filter: sepia(0.25) contrast(2.6) brightness(1.12) saturate(1.4); /* la carta va verso il bianco (sparisce col multiply), le linee restano d'inchiostro */
+  -webkit-mask-image: radial-gradient(circle min(24rem, 30vw) at var(--mx) var(--my), #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+          mask-image: radial-gradient(circle min(24rem, 30vw) at var(--mx) var(--my), #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out);
+}
+.hero-map.is-lens .hero-map-ink { opacity: 1; }
+/* mentre la lente è attiva il resto della carta si schiarisce appena: il contrasto fa il lavoro */
+.hero-map-layer:not(.hero-map-ink) { transition: opacity 600ms var(--ease-out); }
+.hero-map.is-lens .hero-map-layer:not(.hero-map-ink) { opacity: 0.85; }
+@keyframes mappa-deriva {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-1.5%, 1%, 0) scale(1.05); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-map-drift { animation: mappa-deriva 38s ease-in-out infinite alternate; }
+}
+.ocean-canvas {
+  position: absolute; inset: 0;
+  width: 100% !important; height: 100% !important;
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+.hero-stage.is-live .ocean-canvas { opacity: 1; }
+
+/* il mare si scurisce verso il fondo e si salda alla sezione blu sotto */
+.hero::after {
+  content: "";
+  position: absolute; inset: auto 0 0; height: 22%; z-index: -1;
+  background: linear-gradient(to bottom, rgba(13, 44, 82, 0), var(--nastro));
+  pointer-events: none;
+}
+.hero-dive {
+  position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(to bottom, rgba(13, 44, 82, 0) 0%, var(--nastro) 60%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-content { position: relative; padding-top: calc(var(--header-h) + clamp(0.5rem, 3vh, 2.5rem)); }
+.hero-logo { width: min(22rem, 66vw); height: auto; margin: 0 0 var(--s-4) -1.2%; filter: drop-shadow(0 10px 14px rgba(60, 36, 21, 0.28)); }
+.hero-title { margin-bottom: var(--s-4); }
+.hero-title .line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
+.hero-title .line > span { display: block; }
+/* Lilita è larga: sotto i 420px "Porta il mare" deve restare su una riga, quindi il titolo scala con lo schermo */
+@media (max-width: 420px) {
+  .hero-title { font-size: 12.4vw; }
+  /* telefoni bassi: un po' di spazio in più sotto i bottoni, dove naviga il galeone */
+  .hero { min-height: 46rem; }
+}
+.actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-5); }
+
+.scroll-cue {
+  z-index: 1;
+  position: absolute; left: var(--gutter); bottom: var(--s-5);
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  color: var(--crema);
+  font-family: var(--font-cond); font-size: var(--fs-small); font-weight: 700;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   IL VIAGGIO — la carta nautica stesa sul blu
+   ========================================================================== */
+.viaggio { overflow: hidden; }
+.rotta { padding-top: var(--section-y); padding-bottom: var(--s-7); }
+.rotta.is-pinned {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding-block: calc(var(--header-h) + var(--s-5)) var(--s-5);
+}
+.rotta.is-pinned .section-head--split { margin-bottom: var(--s-5); }
+/* titolo e nota allineati alla mappa, che è più larga del resto della pagina */
+.rotta .section-head { max-width: 100rem; }
+
+/* mappa a sinistra (2/3), il prodotto della tappa a destra (1/3) */
+.rotta-layout {
+  /* più largo del resto della pagina: la mappa deve leggersi come nella hero */
+  max-width: 100rem;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--s-7);
+  align-items: center;
+}
+/* il planisfero della hero steso su un foglio di pergamena */
+.carta {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1800 / 929;
+  height: auto;
+  overflow: visible;
+  font-family: var(--font-cond);
+  background: var(--pergamena) var(--tex-pergamena) center / cover;
+  border-radius: var(--r-media);
+  box-shadow: 0 30px 50px -24px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(60, 36, 21, 0.25);
+}
+/* il bianco della mappa sparisce nella pergamena; le terre restano color seppia */
+.carta-mappa { mix-blend-mode: multiply; filter: sepia(0.2) contrast(1.55) saturate(1.25); }
+
+.rotta-guida { fill: none; stroke: rgba(60, 36, 21, 0.35); stroke-width: 3; stroke-dasharray: 3 12; stroke-linecap: round; }
+.rotta-linea { fill: none; stroke: var(--corallo); stroke-width: 7; stroke-dasharray: 18 14; stroke-linecap: round; }
+.rotta-mask { fill: none; stroke: #fff; stroke-width: 24; stroke-dasharray: 1; stroke-dashoffset: 0; }
+html.js .rotta-mask { stroke-dashoffset: 1; }
+html.js.no-scroll-motion .rotta-mask { stroke-dashoffset: 0; }
+
+.carta-ancora { fill: none; stroke: var(--seppia); stroke-width: 3.5; stroke-linecap: round; transition: stroke 250ms ease; }
+.carta-casa.is-reached .carta-ancora { stroke: var(--oro-chiaro); }
+.carta-bordo-rotta path { fill: none; stroke: var(--corallo); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; opacity: 0.85; }
+.carta-tappa circle { r: 30px; fill: var(--carta); stroke: var(--seppia); stroke-width: 3; transition: fill 250ms ease, stroke 250ms ease; }
+.carta-tappa text { fill: var(--seppia); font-family: var(--font-display); font-size: 34px; text-anchor: middle; }
+.carta-tappa.is-reached circle { fill: var(--nastro); stroke: var(--nastro); }
+.carta-tappa.is-reached text { fill: var(--oro-chiaro); }
+
+/* il Principe in viaggio: ritratto tondo con l'anello corallo del pack */
+.principe-anello { fill: var(--corallo); }
+.principe-fondo { fill: var(--nastro); }
+.principe-puntale { fill: var(--corallo); }
+.barca { filter: drop-shadow(0 6px 6px rgba(60, 36, 21, 0.35)); }
+.barca-scala { transform: scale(1.7); }
+
+/* senza scroll animato le tappe sono un elenco: la mappa resta ferma accanto mentre si legge */
+.rotta:not(.is-pinned) .rotta-layout { align-items: start; }
+.rotta:not(.is-pinned) .rotta-chart { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
+
+/* --- le tappe: senza scroll animato sono un elenco; nel pin si vede una tappa alla volta --- */
+.tappe { display: grid; gap: var(--s-5); }
+.tappa { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--s-2) var(--s-4); align-items: start; }
+.tappa-n {
+  grid-column: 1 / -1;
+  font-family: var(--font-cond); font-size: var(--fs-small); font-weight: 700;
+  color: var(--oro-chiaro);
+}
+.tappa-pack { container-type: inline-size; }
+.tappa .h3 { color: var(--crema); }
+.tappa-sub { display: block; font-family: var(--font-text); font-size: var(--fs-body); font-weight: 600; color: var(--crema-2); }
+.tappa-testo p { margin-top: var(--s-2); color: var(--crema-2); }
+.tappa-testo .tappa-zona {
+  display: inline-block; margin-top: var(--s-3);
+  padding: var(--s-1) var(--s-3);
+  border-radius: var(--r-ui);
+  background: rgba(226, 96, 51, 0.16); color: #F5B597;
+  font-family: var(--font-cond); font-size: var(--fs-small); font-weight: 600;
+}
+.rotta-nota { max-width: 100rem; margin-top: var(--s-5); color: var(--crema-2); font-size: var(--fs-small); }
+
+/* nel pin: le tappe stanno una sopra l'altra, appare quella raggiunta */
+.rotta.is-pinned .tappe { grid-template-areas: "tappa"; gap: 0; }
+.rotta.is-pinned .tappa {
+  grid-area: tappa;
+  grid-template-columns: minmax(0, 1fr);
+  opacity: 0; translate: 0 1.25rem;
+  visibility: hidden;
+  transition: opacity 400ms var(--ease-out), translate 500ms var(--ease-out), visibility 0s linear 400ms;
+}
+.rotta.is-pinned .tappa.is-active {
+  opacity: 1; translate: 0 0; visibility: visible;
+  transition: opacity 400ms var(--ease-out) 120ms, translate 500ms var(--ease-out) 120ms, visibility 0s;
+}
+.rotta.is-pinned .tappa-pack { width: min(100%, 15rem); margin-block: var(--s-3) var(--s-2); }
+.rotta.is-pinned .tappa-pack .pack { transform: rotate(-2deg); }
+
+/* il video si allarga con lo scroll */
+.video-stage { padding-bottom: var(--section-y); }
+.video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 92vh;
+  overflow: hidden;
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+.video-poster {
+  position: absolute; inset: 0;
+  display: grid; align-content: end;
+  gap: var(--s-2);
+  padding: clamp(1.5rem, 5vw, 4rem);
+  background:
+    radial-gradient(110% 90% at 80% 8%, rgba(226, 184, 95, 0.3), transparent 55%),
+    linear-gradient(to bottom, var(--nastro-chiaro) 0%, var(--nastro-scuro) 100%);
+}
+.video-poster-title { font-size: clamp(2.5rem, 8vw, 7rem); color: var(--oro-chiaro); max-width: 11ch; }
+.video-poster-note { font-family: var(--font-cond); font-size: var(--fs-small); color: var(--crema-2); }
+.play {
+  position: absolute; left: 50%; top: 50%;
+  display: grid; place-items: center;
+  width: clamp(4rem, 8vw, 6rem); height: clamp(4rem, 8vw, 6rem);
+  translate: -50% -50%;
+  border: 3px solid var(--corallo); border-radius: 50%;
+  background: var(--crema); color: var(--nastro);
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out);
+}
+.play:active { transform: scale(0.94); }
+/* su telefono il poster è basso: il bottone al centro finiva sopra il titolo, lo spostiamo in alto a destra */
+@media (max-width: 600px) {
+  .play { left: auto; right: var(--s-4); top: var(--s-4); translate: none; }
+}
+
+/* ==========================================================================
+   GAMMA — rail orizzontale con i pack veri
+   ========================================================================== */
+.gamma {
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(246, 233, 200, 0.72), rgba(246, 233, 200, 0.72)),
+    var(--tex-pergamena) center bottom / cover;
+}
+.gamma-inner { padding-block: clamp(2.5rem, 5vw, 4rem) var(--section-y); }
+.gamma.is-pinned .gamma-inner {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding-block: calc(var(--header-h) + var(--s-5)) var(--s-6);
+}
+/* "Pronti in 5 minuti": nastro blu con le code a rondine come il logo, orologio nel cerchio corallo del pack */
+.claim-tempo {
+  grid-column: 1 / -1;
+  justify-self: start;
+  display: flex; align-items: center;
+  margin-bottom: var(--s-4);
+  rotate: -2deg;
+}
+.claim-tempo-orologio {
+  position: relative; z-index: 1;
+  flex: none;
+  display: grid; place-items: center;
+  width: clamp(4.25rem, 7vw, 5.5rem); aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--carta);
+  box-shadow: 0 0 0 0.45rem var(--corallo), 0 10px 18px -8px rgba(60, 36, 21, 0.6);
+}
+.claim-tempo-orologio svg { width: 62%; fill: none; stroke: var(--nastro); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.claim-tempo-nastro {
+  margin-left: -1.4rem;
+  padding: 0.5em 1.6em 0.5em 1.9em;
+  background: linear-gradient(var(--nastro-chiaro), var(--nastro) 55%, var(--nastro-scuro));
+  color: var(--oro-chiaro);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.4vw, 2.6rem);
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  /* coda a rondine sul lato destro, come il nastro del logo */
+  clip-path: polygon(0 0, 100% 0, calc(100% - 0.7em) 50%, 100% 100%, 0 100%);
+  filter: drop-shadow(0 8px 10px rgba(60, 36, 21, 0.35));
+}
+.claim-tempo-nastro strong { font-weight: 400; font-size: 1.45em; line-height: 0; color: var(--carta); vertical-align: -0.08em; }
+.gamma-progress { grid-column: 1 / -1; height: 2px; background: var(--linea); display: none; }
+.gamma-progress span { display: block; height: 100%; background: var(--corallo); transform: scaleX(0); transform-origin: left center; }
+.gamma.is-pinned .gamma-progress { display: block; }
+/* nel pin tutto deve stare in una schermata: la larghezza delle card la calcola il JS (fitGammaCards) */
+.gamma.is-pinned .gamma-head { margin-bottom: var(--s-5); }
+.gamma.is-pinned .prodotto { flex-basis: var(--card-w, 19rem); }
+.gamma.is-pinned .prodotto > p {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+/* schermi bassi: senza la descrizione, così la busta resta grande */
+.gamma.is-compact .prodotto > p { display: none; }
+
+.gamma-track {
+  display: flex;
+  gap: clamp(1.25rem, 3vw, 3rem);
+  padding-inline: max(var(--gutter), calc((100vw - var(--wrap)) / 2));
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--seppia-2) transparent;
+  padding-block: var(--s-4);
+}
+.gamma-track::after { content: ""; flex: 0 0 1px; }
+.gamma.is-pinned .gamma-track { overflow: visible; scroll-snap-type: none; }
+
+.prodotto {
+  container-type: inline-size;
+  position: relative;
+  flex: 0 0 clamp(15rem, 21vw, 19rem);
+  scroll-snap-align: start;
+  display: flex; flex-direction: column;
+}
+.prodotto .h3 { margin: var(--s-5) 0 var(--s-3); }
+.prodotto > p { color: var(--seppia-2); margin-top: var(--s-3); }
+.badge {
+  position: absolute; top: 9cqi; right: var(--s-3); z-index: 2;
+  padding: var(--s-1) var(--s-3);
+  border-radius: var(--r-ui);
+  background: var(--corallo-scuro); color: var(--carta);
+  font-family: var(--font-cond); font-size: var(--fs-small); font-weight: 700;
+  transform: rotate(3deg);
+}
+.specs { display: flex; gap: var(--s-5); padding-block: var(--s-3); border-block: 1px solid var(--linea); }
+.specs dt { font-family: var(--font-cond); font-size: var(--fs-small); color: var(--seppia-2); }
+.specs dd { font-family: var(--font-cond); font-weight: 700; font-size: 1.0625rem; font-variant-numeric: tabular-nums; }
+
+/* ---------- Busta: il fronte vero del pack (245 mm) tra le due saldature (20 mm) ---------- */
+.pack {
+  position: relative;
+  aspect-ratio: 245 / 285;
+  overflow: hidden;
+  border-radius: 2.5cqi;
+  background: var(--pergamena);
+  box-shadow: 0 30px 44px -28px rgba(60, 36, 21, 0.75), 0 2px 6px rgba(60, 36, 21, 0.25);
+  transform-style: preserve-3d;
+}
+.pack img { position: absolute; left: 0; top: 7.02%; width: 100%; height: 85.96%; object-fit: cover; }
+/* saldature zigrinate sopra e sotto */
+.pack::before, .pack::after {
+  content: "";
+  position: absolute; left: 0; right: 0; height: 7.02%; z-index: 1;
+  background:
+    repeating-linear-gradient(90deg, rgba(60, 36, 21, 0.16) 0 1.2cqi, transparent 1.2cqi 2.6cqi),
+    linear-gradient(to bottom, #D9A95A, #C98F45);
+}
+.pack::before { top: 0; }
+.pack::after { bottom: 0; }
+/* la finestra rotonda della foto: misure prese dal pack (centro 70,9% / 71,1%, raggio 21,6%) */
+.pack-foto {
+  position: absolute; z-index: 2;
+  left: 70.86%; top: calc(7.02% + 85.96% * 0.7111);
+  width: 43.2%; aspect-ratio: 1;
+  translate: -50% -50%;
+  display: grid; place-content: center; gap: 1.2cqi;
+  padding: 4cqi;
+  border-radius: 50%;
+  background: var(--carta);
+  text-align: center;
+}
+.pack-foto-label { font-family: var(--font-cond); font-size: 3.6cqi; font-weight: 500; color: var(--seppia-2); }
+.pack-foto-nome { font-family: var(--font-display); text-transform: uppercase; font-size: 6.4cqi; line-height: 0.95; color: var(--seppia); }
+.prodotto--tbc .pack img { filter: saturate(0.6) brightness(0.96); }
+
+/* ==========================================================================
+   PASSI
+   ========================================================================== */
+.passi { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); }
+.passo { position: relative; }
+/* la cima tratteggiata che lega i numeri (un tratto per passo, così la texture resta visibile) */
+.passo:not(:last-child)::after {
+  content: "";
+  position: absolute; top: 3.6rem; left: 6.5rem; right: calc(var(--s-6) * -1);
+  border-top: 2px dashed rgba(60, 36, 21, 0.4);
+}
+.passo-n {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 11vw, 9rem); line-height: 0.75;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--seppia);
+}
+.passo .h3 { margin-top: var(--s-5); }
+.passo p { margin-top: var(--s-2); color: var(--seppia-2); max-width: 22rem; }
+.passo-tempo {
+  display: inline-block;
+  margin-top: var(--s-4);
+  padding: var(--s-1) var(--s-3);
+  border-radius: 999px;
+  background: var(--nastro); color: var(--crema);
+  font-family: var(--font-cond); font-size: var(--fs-small); font-weight: 700; font-variant-numeric: tabular-nums;
+}
+
+/* anteprima del PDF disegnata in CSS */
+.doc-preview {
+  --doc-w: 6.5rem;
+  --doc-pad: calc(var(--doc-w) * 0.09);
+  display: flex; flex-direction: column; gap: calc(var(--doc-w) * 0.05);
+  width: var(--doc-w);
+  font-size: var(--doc-w);
+  aspect-ratio: 210 / 297;
+  padding: 0 var(--doc-pad) var(--doc-pad);
+  background: var(--pergamena-chiara);
+  box-shadow: 0 16px 30px -18px rgba(60, 36, 21, 0.6), 0 1px 3px rgba(60, 36, 21, 0.2);
+  transform: rotate(-3deg);
+}
+.doc-band {
+  margin: 0 calc(var(--doc-pad) * -1); padding: 0.06em var(--doc-pad);
+  background: var(--nastro); color: var(--oro-chiaro);
+  font-family: var(--font-display); text-transform: uppercase; font-size: 0.085em; line-height: 1;
+}
+.doc-title { font-family: var(--font-display); text-transform: uppercase; font-size: 0.12em; line-height: 0.95; color: var(--seppia); }
+.doc-lines { flex: 1; background: repeating-linear-gradient(to bottom, rgba(60, 36, 21, 0.18) 0 calc(var(--doc-w) * 0.024), transparent calc(var(--doc-w) * 0.024) calc(var(--doc-w) * 0.06)); }
+.doc-lines--short { flex: 0 0 22%; margin-right: 30%; }
+.doc-waterline { height: calc(var(--doc-w) * 0.025); margin: 0 calc(var(--doc-pad) * -1); background: var(--corallo); }
+
+/* ==========================================================================
+   DOVE TROVARLO — la busta vera con i tre segni per riconoscerla
+   ========================================================================== */
+.dove-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: center;
+}
+.dove-pack { container-type: inline-size; max-width: 30rem; width: 100%; justify-self: center; }
+.dove-pack .pack { transform: rotate(-2.5deg); }
+.segno {
+  position: absolute; z-index: 3;
+  left: var(--x); top: calc(7.02% + 0.8596 * var(--y));
+  translate: -50% -50%;
+  display: grid; place-items: center;
+  width: 2.75rem; aspect-ratio: 1;
+  border: 3px solid var(--crema);
+  border-radius: 50%;
+  background: var(--nastro); color: var(--oro-chiaro);
+  font-family: var(--font-display); font-size: 1.35rem; line-height: 1;
+  box-shadow: 0 6px 14px -6px rgba(8, 30, 58, 0.7);
+}
+.dove-copy .h2 { color: var(--seppia); }
+.dove-lead { margin-top: var(--s-5); font-size: var(--fs-lead); line-height: 1.5; color: var(--seppia-2); max-width: 32rem; }
+.segni { display: grid; gap: var(--s-5); margin-top: var(--s-6); }
+.segni li { display: grid; grid-template-columns: 2.75rem minmax(0, 1fr); gap: var(--s-4); align-items: start; }
+.segni-n {
+  display: grid; place-items: center;
+  width: 2.75rem; aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--nastro); color: var(--oro-chiaro);
+  font-family: var(--font-display); font-size: 1.35rem; line-height: 1;
+}
+.segni p { margin-top: var(--s-1); color: var(--seppia-2); }
+.banco {
+  display: grid; align-content: end; gap: var(--s-1);
+  margin-top: var(--s-7);
+  aspect-ratio: 16 / 7;
+  padding: var(--s-5);
+  border: 2px dashed rgba(60, 36, 21, 0.4);
+  border-radius: var(--r-media);
+  background: rgba(251, 243, 223, 0.6);
+}
+.banco-titolo { font-size: clamp(1.5rem, 2.6vw, 2.1rem); color: var(--seppia); }
+.banco-nota { font-family: var(--font-cond); font-size: var(--fs-small); font-weight: 500; color: var(--seppia-2); }
+
+/* ==========================================================================
+   PER LA DISTRIBUZIONE — fascia compatta prima del footer
+   ========================================================================== */
+.distribuzione { padding-block: clamp(3.5rem, 7vw, 5.5rem); }
+.distribuzione-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: var(--s-6) clamp(2rem, 6vw, 5rem);
+  align-items: center;
+}
+.distribuzione .h2 { font-size: clamp(2.25rem, 4.2vw, 3.25rem); }
+.distribuzione-copy > p { margin-top: var(--s-4); color: var(--crema-2); max-width: 36rem; }
+.distribuzione-copy > .distribuzione-fiera { color: var(--crema); font-family: var(--font-cond); font-weight: 700; }
+.distribuzione-azioni { display: flex; align-items: center; gap: var(--s-6); }
+.distribuzione .doc-preview { flex: 0 0 auto; }
+.referente p + p { margin-top: 2px; }
+.referente-label { font-family: var(--font-cond); font-size: var(--fs-small); font-weight: 700; color: var(--crema-2); }
+.referente-nome { font-weight: 600; }
+.referente .btn { margin-top: var(--s-4); }
+/* su blu il bottone prende l'oro delle lettere del nastro */
+.btn--oro { background: var(--oro-chiaro); color: var(--nastro); }
+.section--nastro a.btn--oro { color: var(--nastro); }
+@media (hover: hover) and (pointer: fine) {
+  .btn--oro:hover { background: var(--crema); }
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.site-footer { --focus: var(--oro-chiaro); background: #24160C; color: #D9C6A0; padding-top: var(--s-7); overflow: hidden; }
+.footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-4) var(--s-6); }
+.footer-logo { width: 13rem; height: auto; }
+.footer-links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); font-family: var(--font-cond); font-weight: 500; }
+.site-footer a { color: var(--crema); }
+.site-footer .small { flex-basis: 100%; order: 3; color: #B9A47D; }
+.footer-wordmark {
+  margin-top: var(--s-7);
+  font-size: min(7.4vw, 6.9rem);   /* il claim intero sta nella larghezza del contenuto */
+  line-height: 0.8;
+  white-space: nowrap;
+  color: #3D2716;
+  transform: translateY(0.1em);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 860px) {
+  .dove-grid, .distribuzione-grid { grid-template-columns: minmax(0, 1fr); }
+  .dove-pack { max-width: 22rem; }
+  /* su schermo stretto: titolo e testo prima, poi la busta, poi i tre segni */
+  .dove-copy { display: contents; }
+  .dove-copy .h2 { order: 1; }
+  .dove-lead { order: 2; margin-top: calc(var(--s-6) * -1 + var(--s-2)); }
+  .dove-pack { order: 3; }
+  .segni { order: 4; margin-top: 0; }
+  .banco { order: 5; margin-top: 0; }
+  .main-nav { display: none; }
+  .header-inner { justify-content: space-between; }
+  .section-head--split { grid-template-columns: minmax(0, 1fr); }
+  /* telefono e tablet: mappa sopra, tappa sotto */
+  .rotta-layout { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
+  .rotta.is-pinned .section-head--split > p { display: none; }
+  .rotta.is-pinned .section-head--split { margin-bottom: var(--s-4); }
+  .rotta.is-pinned .tappa { grid-template-columns: 7.5rem minmax(0, 1fr); column-gap: var(--s-4); }
+  .rotta.is-pinned .tappa-pack { width: 100%; margin: 0; }
+  /* la carta è stretta: segnaposti e Principe più grandi per restare leggibili */
+  .carta-tappa circle { r: 50px; stroke-width: 5; }
+  .carta-tappa text { font-size: 58px; translate: 0 8px; }
+  .barca-scala { transform: scale(2.6); }
+  .prodotto { flex-basis: 72vw; }
+  .gamma-track { scroll-padding-inline: var(--gutter); }
+  .passi { grid-template-columns: minmax(0, 1fr); gap: var(--s-7); }
+  .passo:not(:last-child)::after { top: 6.4rem; left: 2.7rem; right: auto; bottom: calc(var(--s-7) * -1 + 0.5rem); border-top: 0; border-left: 2px dashed rgba(60, 36, 21, 0.4); }
+  .passo { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); column-gap: var(--s-4); }
+  .passo-n { grid-row: span 4; font-size: 6rem; text-align: center; }
+  .passo .h3 { margin-top: 0; }
+  .passo-tempo { justify-self: start; }
+}
+
+@media (max-width: 560px) {
+  .claim-tempo-nastro { font-size: 1.3rem; }
+  .claim-tempo-orologio { width: 3.75rem; }
+  :root { --fs-body: 1rem; --fs-lead: 1.125rem; --header-h: 3.75rem; }
+  .brand img { height: 2.5rem; }
+  .btn--sm { padding: 0 var(--s-3); font-size: 0.875rem; }
+  .actions .btn { flex: 1 1 auto; }
+  .carta { border-radius: var(--r-ui); }
+  .footer-logo { width: 10rem; }
+  .distribuzione-azioni { align-items: flex-start; gap: var(--s-5); }
+  .distribuzione .doc-preview { display: none; }
+  .banco { aspect-ratio: 4 / 3; }
+}
+
+/* schermi bassi (laptop 768px): nel pin la carta e le tappe devono stare in una schermata */
+@media (max-height: 820px) and (min-width: 861px) {
+  .gamma.is-pinned .gamma-head > p:not(.claim-tempo) { display: none; }
+  /* schermi bassi: il nastro sale accanto al titolo, al posto del testo introduttivo */
+  .gamma.is-pinned .gamma-head .h2 { grid-column: 1; grid-row: 1; }
+  .gamma.is-pinned .claim-tempo { grid-column: 2; grid-row: 1; align-self: end; margin-bottom: 0.4rem; }
+  .gamma.is-pinned .claim-tempo-nastro { font-size: clamp(1.3rem, 2.3vw, 2.4rem); }
+  .rotta.is-pinned .tappa-pack { width: min(100%, 11rem); }
+  .rotta.is-pinned .section-head--split > p { font-size: 1.0625rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ocean-canvas { transition: none; }
+  .video-frame { will-change: auto; }
+}
